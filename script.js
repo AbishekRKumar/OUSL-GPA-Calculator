@@ -47,13 +47,15 @@ document.getElementById('gpaForm').addEventListener('submit', function(event) {
 });
 
 document.getElementById('downloadButton').addEventListener('click', function() {
-    const element = document.createElement('a');
-    const resultHTML = document.getElementById('result').innerHTML;
-    const blob = new Blob([resultHTML], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    element.href = url;
-    element.download = 'gpa_result.html';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    const resultElement = document.getElementById('result');
+    const gpaValue = document.getElementById('gpaValue').innerText;
+    const gpaClass = document.getElementById('gpaClass').innerText;
+
+    doc.text(`GPA: ${gpaValue}`, 10, 10);
+    doc.text(`Class: ${gpaClass}`, 10, 20);
+
+    doc.save('gpa_result.pdf');
 });
