@@ -45,6 +45,7 @@ document.getElementById('gpaForm').addEventListener('submit', function(event) {
 
     document.getElementById('result').style.display = 'block';
 });
+
 document.getElementById('downloadButton').addEventListener('click', function() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
