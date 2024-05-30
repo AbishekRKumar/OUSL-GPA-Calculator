@@ -48,14 +48,22 @@ document.getElementById('gpaForm').addEventListener('submit', function(event) {
 
 document.getElementById('downloadButton').addEventListener('click', function() {
     const { jsPDF } = window.jspdf;
+
     const doc = new jsPDF();
-    
-    const resultElement = document.getElementById('result');
-    const gpaValue = document.getElementById('gpaValue').innerText;
-    const gpaClass = document.getElementById('gpaClass').innerText;
 
-    doc.text(`GPA: ${gpaValue}`, 10, 10);
-    doc.text(`Class: ${gpaClass}`, 10, 20);
+    let content = 'GPA Results\n\n';
+    content += `Your GPA: ${document.getElementById('gpaValue').innerText}\n`;
+    content += `GPA Class: ${document.getElementById('gpaClass').innerText}\n\n`;
+    content += 'Courses:\n';
 
+    const courseElements = document.getElementsByClassName('course');
+    Array.from(courseElements).forEach(course => {
+        const courseName = course.querySelector('[name="courseName"]').value;
+        const credits = course.querySelector('[name="courseCredits"]').value;
+        const grade = course.querySelector('[name="courseGrade"]').selectedOptions[0].text;
+        content += `${courseName} - ${credits} Credits - Grade: ${grade}\n`;
+    });
+
+    doc.text(content, 10, 10);
     doc.save('gpa_result.pdf');
 });
